@@ -4,6 +4,10 @@ import Vapor
 final class TodoController {
     /// Returns a list of all `Todo`s.
     func index(_ req: Request) throws -> Future<[Todo]> {
+
+        let logger = try req.sharedContainer.make(Logger.self)
+        logger.info("AAAAAAAAAAA /index !!!!")
+
         return Todo.query(on: req).all()
     }
 

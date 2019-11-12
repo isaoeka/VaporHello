@@ -4,16 +4,18 @@ import Vapor
 final class TodoController {
     /// Returns a list of all `Todo`s.
     func index(_ req: Request) throws -> Future<[Todo]> {
-
         let logger = try req.sharedContainer.make(Logger.self)
-        logger.info("AAAAAAAAAAA /index !!!!")
+        logger.info("GET /index !!!!")
 
         return Todo.query(on: req).all()
     }
 
     /// Saves a decoded `Todo` to the database.
     func create(_ req: Request) throws -> Future<Todo> {
-        return try req.content.decode(Todo.self).flatMap { todo in
+        let logger = try req.sharedContainer.make(Logger.self)
+        logger.info("POST /index !!!!")
+
+        return try req.content.decode(json: Todo.self, using: .custom()).flatMap { todo in
             return todo.save(on: req)
         }
     }
